@@ -1,2 +1,1 @@
-# bus-mall
-Week 3 Bus Mall
+# Assets for BUSMALL Lab
