@@ -119,6 +119,8 @@ function eachClick3 (event) {
   }
 }
 
+console.log(totalClicks);
+
 //++++++++++++++++++++++++++++++++++++++++++++++++
 //chart setup here
 //++++++++++++++++++++++++++++++++++++++++++++++++
@@ -200,6 +202,7 @@ function hideChart() {
 document.getElementById('draw-chart').addEventListener('click', function() {
   drawChart();
 });
+
 
 document.getElementById('draw-chart').addEventListener('click', function() {
   document.getElementById('votes').hidden = true;

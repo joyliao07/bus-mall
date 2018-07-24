@@ -16,7 +16,11 @@ header {
 header p {
     font-size: 50px;
     text-align: center;
-    margin-bottom: 60px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    margin-bottom: 50px;
+    font-family: Exo;
+    border: 5px double black;
 }
 
 nav li {
@@ -41,9 +45,20 @@ ol.contact {
     margin: 30px;
     align-items: center;
     display: inline;
+    border: 2px double black;   
 }
 
-
+.button-chart {
+    position: absolute;
+    height: 60px;
+    width: 250px;
+    background-color: #274b87;
+    color: white;
+    /* display: block;
+    align-content: center;   */
+    top: 850px;
+    right: 500px;
+}
 
 
 
