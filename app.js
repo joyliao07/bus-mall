@@ -79,40 +79,43 @@ function eachClick1 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran1].clicksPerImage++;
-  if (totalClicks < 3) {
+  if (totalClicks < 25) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
     img1.removeEventListener('click', eachClick1);
+    updateChartArrays();
   }
 }
-
 
 
 function eachClick2 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran2].clicksPerImage++;
-  if (totalClicks < 3) {
+  if (totalClicks < 25) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
     img2.removeEventListener('click', eachClick2);
+    updateChartArrays();
   }
 }
+
 
 function eachClick3 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran3].clicksPerImage++;
-  if (totalClicks < 3) {
+  if (totalClicks < 25) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
     img3.removeEventListener('click', eachClick3);
+    updateChartArrays();
   }
 }
 
@@ -129,8 +132,6 @@ function updateChartArrays (){
     votes[i] = allImageObject[i].clicksPerImage;
   }
 }
-updateChartArrays();
-
 
 var data = {
   labels: product,
@@ -200,22 +201,9 @@ document.getElementById('draw-chart').addEventListener('click', function() {
   drawChart();
 });
 
-
 document.getElementById('draw-chart').addEventListener('click', function() {
   document.getElementById('votes').hidden = true;
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
