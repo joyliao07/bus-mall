@@ -13,6 +13,9 @@ var showVotes = document.getElementById('votes');
 
 var ran1, ran2, ran3;
 
+var showChart;
+var chartDrawn = false;
+
 //+++++++++++++++++++++++++CONSTRUCTOR & OTHER FUNCTIONS+++++++++++++++++++++++
 
 var imgObjs = []; //this is the images that have been shown on the webpage; duplicated list?
@@ -65,7 +68,7 @@ createImg();
 function resultVotes() {
   for (var j = 0; j < allImageObject.length; j++) {
     var ulEl = document.createElement('ul');
-    ulEl.textContent = 'Image ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
+    ulEl.textContent = 'Product ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
     showVotes.appendChild(ulEl);
   }
 }
@@ -82,9 +85,9 @@ function eachClick1 (event) {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
     img1.removeEventListener('click', eachClick1);
+    updateChartArrays();
   }
 }
-
 
 
 function eachClick2 (event) {
@@ -97,8 +100,10 @@ function eachClick2 (event) {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
     img2.removeEventListener('click', eachClick2);
+    updateChartArrays();
   }
 }
+
 
 function eachClick3 (event) {
   var nameClicked = event.target.src;
@@ -110,8 +115,98 @@ function eachClick3 (event) {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
     img3.removeEventListener('click', eachClick3);
+    updateChartArrays();
   }
 }
+
+console.log(totalClicks);
+
+//++++++++++++++++++++++++++++++++++++++++++++++++
+//chart setup here
+//++++++++++++++++++++++++++++++++++++++++++++++++
+
+var product = [];
+var votes = [];
+
+function updateChartArrays (){
+  for (var i=0; i < allImageObject.length; i++) {
+    product[i] = allImageObject[i].name2;
+    votes[i] = allImageObject[i].clicksPerImage;
+  }
+}
+
+var data = {
+  labels: product,
+  datasets: [{
+    data: votes,
+    backgroundColor: [
+      'red',
+      'lightblue',
+      'navy',
+      'red',
+      'lightblue',
+      'navy',
+      'red',
+      'lightblue',
+      'navy',
+      'red',
+      'lightblue',
+      'navy'
+    ],
+    hoverBackgroundColor: [
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple'
+    ],
+  }]
+};
+
+function drawChart (){
+  var ctx = document.getElementById('vote-chart').getContext('2d'); // "msGetInpurContext" or "getContext"?
+  showChart = new Chart (ctx, {
+    type: 'polarArea',
+    data: data,
+    options: {
+      responsive: false,
+      animation: {
+        duration: 1000,
+        easing: 'easeOutBounce'
+      }
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          max: 10,
+          min: 0,
+          stepSize: 1.0
+        }
+      }]
+    }
+  });
+  chartDrawn = true;
+}
+
+function hideChart() {
+  document.getElementById('vote-chart').hidden = true;
+}
+
+document.getElementById('draw-chart').addEventListener('click', function() {
+  drawChart();
+});
+
+
+document.getElementById('draw-chart').addEventListener('click', function() {
+  document.getElementById('votes').hidden = true;
+});
 
 
 
