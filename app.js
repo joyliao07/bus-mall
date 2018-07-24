@@ -191,12 +191,19 @@ function drawChart (){
   });
   chartDrawn = true;
 }
-drawChart();
+
+function hideChart() {
+  document.getElementById('vote-chart').hidden = true;
+}
+
+document.getElementById('draw-chart').addEventListener('click', function() {
+  drawChart();
+});
 
 
-
-
-
+document.getElementById('draw-chart').addEventListener('click', function() {
+  document.getElementById('votes').hidden = true;
+});
 
 
 
