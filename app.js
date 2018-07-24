@@ -43,14 +43,6 @@ function random (min, max) {
 random(1,20);
 
 
-function resultVotes() {
-  for (var j = 0; j < allImageObject.length; j++) {
-    var ulEl = document.createElement('ul');
-    ulEl.textContent = 'Image ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
-    showVotes.appendChild(ulEl);
-  }
-}
-
 function createImg() {
   ran1 = random(1,20)-1;
   ran2 = random(1,20)-1;
@@ -70,54 +62,54 @@ function createImg() {
 }
 createImg();
 
+function resultVotes() {
+  for (var j = 0; j < allImageObject.length; j++) {
+    var ulEl = document.createElement('ul');
+    ulEl.textContent = 'Image ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
+    showVotes.appendChild(ulEl);
+  }
+}
 //////////////// BELOW ARE EVENT HANDLERS /////////////////////
 
 
 function eachClick1 (event) {
-  totalClicks++;
   var nameClicked = event.target.src;
-  console.log('nameClicked: ', nameClicked);
+  totalClicks++;
   allImageObject[ran1].clicksPerImage++;
-  console.log('allImageObject[ran1].name2: ', allImageObject[ran1].name2);
-  console.log('allImageObject[ran1].clicksPerImage: ', allImageObject[ran1].clicksPerImage);
   if (totalClicks < 25) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
+    img1.removeEventListener('click', eachClick1);
   }
 }
 
-function eachClick2 (event) {
-  totalClicks++;
-  var nameClicked = event.target.src;
-  console.log('nameClicked: ', nameClicked);
-  allImageObject[ran2].clicksPerImage++;
-  console.log('allImageObject[ran2].name2: ', allImageObject[ran2].name2);
-  console.log('allImageObject[ran2].clicksPerImage: ', allImageObject[ran2].clicksPerImage);
-  if (totalClicks < 25) {
 
+
+function eachClick2 (event) {
+  var nameClicked = event.target.src;
+  totalClicks++;
+  allImageObject[ran2].clicksPerImage++;
+  if (totalClicks < 25) {
     createImg();
   } else {
-    resultVotes();
     alert('You have reached 25 clicks. Thank you for your participation.');
+    resultVotes();
+    img2.removeEventListener('click', eachClick2);
   }
 }
 
 function eachClick3 (event) {
-
-  totalClicks++;
-
   var nameClicked = event.target.src;
-  console.log('nameClicked: ', nameClicked);
+  totalClicks++;
   allImageObject[ran3].clicksPerImage++;
-  console.log('allImageObject[ran3].name2: ', allImageObject[ran3].name2);
-  console.log('allImageObject[ran3].clicksPerImage: ', allImageObject[ran3].clicksPerImage);
-  if (totalClicks < 5) {
+  if (totalClicks < 25) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
+    img3.removeEventListener('click', eachClick3);
   }
 }
 
