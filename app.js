@@ -53,12 +53,14 @@ function resultVotes() {
 
 function createImg() {
   ran1 = random(1,20)-1;
-  
-
-
-
   ran2 = random(1,20)-1;
+  while (ran2 === ran1){
+    ran2 = random(1,20) -1;
+  }
   ran3 = random(1,20)-1;
+  while (ran3 === ran2 || ran3 === ran1){
+    ran3 = random(1,20) -1;
+  }
   img1.src = imgs[ran1];
   img2.src = imgs[ran2];
   img3.src = imgs[ran3];
