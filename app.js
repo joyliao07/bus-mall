@@ -11,12 +11,11 @@ var img1 = document.getElementById('img1');
 var img2 = document.getElementById('img2');
 var img3 = document.getElementById('img3');
 
-var showVotes = document.getElementById('votes');
+
 ////////////////CONSTRUCTOR TO TRACK COUNT OF CLICKS/////////////////////
 
 var imgObjs = []; //this is the images that have been shown on the webpage; duplicated list?
 var allImageObject = []; //this is all the images that we have and all their info from the constructor
-
 
 
 function ImageTracker(allImages) {
@@ -26,8 +25,9 @@ function ImageTracker(allImages) {
   this.clicksPerImage=0;
   this.displayCount=0;
   allImageObject.push(this);
+  // nukeresultVotes();
 }
-console.log('Total Clicks: ', totalClicks);
+
 
 
 for( var i=0; i < imgs.length; i++) {
@@ -78,11 +78,40 @@ function eachClick1 (event) {
   console.log('allImageObject[ran1].name2: ', allImageObject[ran1].name2);
   console.log('allImageObject[ran1].clicksPerImage: ', allImageObject[ran1].clicksPerImage);
   if (totalClicks < 25) {
+
+
+
+
     createImg();
   } else {
+
+
     alert('You have reached 25 clicks. Thank you for your participation.');
   }
 }
+
+var showVotes = document.getElementById('votes');
+
+
+// function nukeresultVotes() {
+//   for (var j = 0; j < allImageObject.length; j++) {
+//     var ulEl = document.createElement('ul');
+//     ulEl.textContent = 'Image ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
+//     showVotes.appendChild(ulEl);
+//   }
+//   // if (showVotes) {
+//   //   showVotes.remove();
+//   }
+// }
+
+// function resultVotes() {
+//   for (var j = 0; j < allImageObject.length; j++) {
+//     var ulEl = document.createElement('ul');
+//     ulEl.textContent = 'Image ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
+//     showVotes.appendChild(ulEl);
+//   }
+// }
+
 
 function eachClick2 (event) {
 
@@ -94,8 +123,10 @@ function eachClick2 (event) {
   console.log('allImageObject[ran2].name2: ', allImageObject[ran2].name2);
   console.log('allImageObject[ran2].clicksPerImage: ', allImageObject[ran2].clicksPerImage);
   if (totalClicks < 25) {
+
     createImg();
   } else {
+
     alert('You have reached 25 clicks. Thank you for your participation.');
   }
 }
@@ -115,7 +146,6 @@ function eachClick3 (event) {
     alert('You have reached 25 clicks. Thank you for your participation.');
   }
 }
-console.log('totalClicks: ', totalClicks);
 
 
 
@@ -123,13 +153,6 @@ console.log('totalClicks: ', totalClicks);
 /////////////below are to show the counts///////////////////////////////////
 
 
-
-for (var j = 0; j < allImageObject.length; j++) {
-  var ulEl = document.createElement('ul');
-  ulEl.textContent = 'Image ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
-  showVotes.appendChild(ulEl);
-
-}
 
 
 img1.addEventListener('click', eachClick1);
