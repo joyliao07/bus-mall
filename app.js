@@ -16,6 +16,8 @@ var ran1, ran2, ran3;
 var showChart;
 var chartDrawn = false;
 
+var previousImages = [];
+
 //+++++++++++++++++++++++++CONSTRUCTOR & OTHER FUNCTIONS+++++++++++++++++++++++
 
 var imgObjs = []; //this is the images that have been shown on the webpage; duplicated list?
@@ -48,12 +50,15 @@ random(1,20);
 
 function createImg() {
   ran1 = random(1,20)-1;
+  while (previousImages.indexOf(ran1) !== -1){  //use the indexof method
+    ran1 = random(1,20) -1;
+  }
   ran2 = random(1,20)-1;
-  while (ran2 === ran1){
+  while (ran2 === ran1 || previousImages.indexOf(ran2) !== -1){
     ran2 = random(1,20) -1;
   }
   ran3 = random(1,20)-1;
-  while (ran3 === ran2 || ran3 === ran1){
+  while (ran3 === ran2 || ran3 === ran1 || previousImages.indexOf(ran3) !== -1){
     ran3 = random(1,20) -1;
   }
   img1.src = imgs[ran1];
@@ -62,6 +67,8 @@ function createImg() {
   allImageObject[ran1].displayCount ++;
   allImageObject[ran2].displayCount ++;
   allImageObject[ran3].displayCount ++;
+  previousImages = [ran1, ran2, ran3];
+  console.log ('previousImages: ', previousImages);
 }
 createImg();
 
@@ -176,7 +183,7 @@ function drawChart (){
     type: 'polarArea',
     data: data,
     options: {
-      responsive: false,
+      responsive: false, //set it to false so you can change the size of the chart (otherwise will be entire screen)
       animation: {
         duration: 1000,
         easing: 'easeOutBounce'
@@ -213,7 +220,6 @@ document.getElementById('draw-chart').addEventListener('click', function() {
 img1.addEventListener('click', eachClick1);
 img2.addEventListener('click', eachClick2);
 img3.addEventListener('click', eachClick3);
-
 
 
 
