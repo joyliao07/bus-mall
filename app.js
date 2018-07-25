@@ -91,6 +91,7 @@ function eachClick1 (event) {
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
+    document.getElementById('draw-chart').hidden = false;
     img1.removeEventListener('click', eachClick1);
     updateChartArrays();
   }
@@ -106,6 +107,7 @@ function eachClick2 (event) {
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
+    document.getElementById('draw-chart').hidden = false;
     img2.removeEventListener('click', eachClick2);
     updateChartArrays();
   }
@@ -121,6 +123,7 @@ function eachClick3 (event) {
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
     resultVotes();
+    document.getElementById('draw-chart').hidden = false;
     img3.removeEventListener('click', eachClick3);
     updateChartArrays();
   }
@@ -202,12 +205,18 @@ function drawChart (){
   chartDrawn = true;
 }
 
-function hideChart() {
-  document.getElementById('vote-chart').hidden = true;
-}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//HIDE BUTTON HERE
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+document.getElementById('draw-chart').hidden = true;
+
+
 
 document.getElementById('draw-chart').addEventListener('click', function() {
   drawChart();
+  document.getElementById('draw-chart').hidden = true;
 });
 
 
