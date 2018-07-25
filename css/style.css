@@ -40,10 +40,17 @@ ol.contact {
     text-align: center;
 }
 
+main div p {
+    color: #0a1d3d;
+    size: 12px;
+    font-family: Noto Sans;
+    line-height: 50px;
+}
+
 .pix3 {
-    width: 250px;
+    width: 180px;
     margin: 30px;
-    align-items: center;
+    margin-bottom: 80px;   
     display: inline;
     border: 2px double black;   
 }
@@ -56,7 +63,7 @@ ol.contact {
     color: white;
     /* display: block;
     align-content: center;   */
-    top: 850px;
+    top: 1530px;
     right: 500px;
 }
 
