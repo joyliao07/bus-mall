@@ -18,6 +18,10 @@ var chartDrawn = false;
 
 var previousImages = [];
 
+var currentVote = []; //to record votes from the current round into an array - unecessary? 
+var votesHistory = []; //to record votes from previous rounds (local storage)
+
+
 //+++++++++++++++++++++++++CONSTRUCTOR & OTHER FUNCTIONS+++++++++++++++++++++++
 
 var imgObjs = []; //this is the images that have been shown on the webpage; duplicated list?
@@ -68,7 +72,6 @@ function createImg() {
   allImageObject[ran2].displayCount ++;
   allImageObject[ran3].displayCount ++;
   previousImages = [ran1, ran2, ran3];
-  console.log ('previousImages: ', previousImages);
 }
 createImg();
 
@@ -86,7 +89,7 @@ function eachClick1 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran1].clicksPerImage++;
-  if (totalClicks < 25) {
+  if (totalClicks < 5) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
@@ -94,6 +97,9 @@ function eachClick1 (event) {
     document.getElementById('draw-chart').hidden = false;
     img1.removeEventListener('click', eachClick1);
     updateChartArrays();
+    for (var i = 0; i < imgs.length; i++) {
+      votesHistory.push(allImageObject[i].clicksPerImage); //now to stringify it.
+    }
   }
 }
 
@@ -102,7 +108,7 @@ function eachClick2 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran2].clicksPerImage++;
-  if (totalClicks < 25) {
+  if (totalClicks < 5) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
@@ -110,6 +116,9 @@ function eachClick2 (event) {
     document.getElementById('draw-chart').hidden = false;
     img2.removeEventListener('click', eachClick2);
     updateChartArrays();
+    for (var i = 0; i < imgs.length; i++) {
+      votesHistory.push(allImageObject[i].clicksPerImage); //test this
+    }
   }
 }
 
@@ -118,7 +127,7 @@ function eachClick3 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran3].clicksPerImage++;
-  if (totalClicks < 25) {
+  if (totalClicks < 5) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
@@ -126,10 +135,11 @@ function eachClick3 (event) {
     document.getElementById('draw-chart').hidden = false;
     img3.removeEventListener('click', eachClick3);
     updateChartArrays();
+    for (var i = 0; i < imgs.length; i++) {
+      votesHistory.push(allImageObject[i].clicksPerImage); //test this
+    }
   }
 }
-
-console.log(totalClicks);
 
 //++++++++++++++++++++++++++++++++++++++++++++++++
 //chart setup here
