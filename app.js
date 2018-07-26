@@ -13,19 +13,7 @@ var showVotes = document.getElementById('votes');
 
 var ran1, ran2, ran3;
 
-var showChart;
-var chartDrawn = false;
-
 var previousImages = [];
-
-var stringifiedHistory = [];
-var retrievedHistory = [];
-
-var parsedHistory = [];
-
-if (localStorage.keyAllImageObject) {
-  parsedHistory = JSON.parse(localStorage.keyAllImageObject);
-}
 
 //+++++++++++++++++++++++++CONSTRUCTOR & OTHER FUNCTIONS+++++++++++++++++++++++
 
@@ -129,11 +117,6 @@ function eachClick1 (event) {
     document.getElementById('draw-chart').hidden = false;
     img1.removeEventListener('click', eachClick1);
     updateChartArrays();
-
-    // stringifiedHistory = JSON.stringify(allImageObject); //Step 1: Stringify "allImageObject"
-    // localStorage.setItem('keyAllImageObject', stringifiedHistory); //Step 2: Save data into localStorage
-    // retrievedHistory = localStorage.keyAllImageObject; //Step 3: get data back through localStorage
-    // parsedHistory = JSON.parse(retrievedHistory);
   }
 }
 
@@ -181,11 +164,9 @@ var votes = [];
 function updateChartArrays (){
   for (var i=0; i < allImageObject.length; i++) {
     product[i] = allImageObject[i].name2;
-    votes[i] = allImageObject[i].clicksPerImage;
+    votes[i] = JSON.parse(localStorage.votesLocalStorage)[i];
   }
 }
-
-// here to make 
 
 
 var data = {
@@ -225,7 +206,7 @@ var data = {
 
 function drawChart (){
   var ctx = document.getElementById('vote-chart').getContext('2d'); // "msGetInpurContext" or "getContext"?
-  showChart = new Chart (ctx, {
+  new Chart (ctx, {
     type: 'polarArea',
     data: data,
     options: {
@@ -245,7 +226,6 @@ function drawChart (){
       }]
     }
   });
-  chartDrawn = true;
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -266,7 +246,6 @@ document.getElementById('draw-chart').addEventListener('click', function() {
 document.getElementById('draw-chart').addEventListener('click', function() {
   document.getElementById('votes').hidden = true;
 });
-
 
 
 img1.addEventListener('click', eachClick1);
