@@ -18,9 +18,14 @@ var chartDrawn = false;
 
 var previousImages = [];
 
-var currentVote = []; //to record votes from the current round into an array - unecessary? 
-var votesHistory = []; //to record votes from previous rounds (local storage)
+var stringifiedHistory = [];
+var retrievedHistory = [];
 
+var parsedHistory = [];
+
+if (localStorage.keyAllImageObject) {
+  parsedHistory = JSON.parse(localStorage.keyAllImageObject);
+}
 
 //+++++++++++++++++++++++++CONSTRUCTOR & OTHER FUNCTIONS+++++++++++++++++++++++
 
@@ -54,7 +59,7 @@ random(1,20);
 
 function createImg() {
   ran1 = random(1,20)-1;
-  while (previousImages.indexOf(ran1) !== -1){  //use the indexof method
+  while (previousImages.indexOf(ran1) !== -1){ //use the indexof method
     ran1 = random(1,20) -1;
   }
   ran2 = random(1,20)-1;
@@ -84,22 +89,51 @@ function resultVotes() {
 }
 //////////////// BELOW ARE EVENT HANDLERS /////////////////////
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++
+//WHEN THE PAGE RELOAD
+//++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+function localStorageVotes () {
+
+  var newClicks = [];                       //Put new votes into an array
+  for (var j = 0; j < allImageObject.length; j++){
+    newClicks.push(allImageObject[j].clicksPerImage);
+  }
+
+  var totalLocalStorage = [];
+  if (localStorage.votesLocalStorage) {
+    for (var k = 0; k <newClicks.length; k++) {
+      totalLocalStorage[k] = newClicks[k] + JSON.parse(localStorage.votesLocalStorage)[k];
+    }
+  } else {
+
+    totalLocalStorage = newClicks;
+
+  }
+  localStorage.votesLocalStorage = JSON.stringify(totalLocalStorage);
+}
+
+
 
 function eachClick1 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran1].clicksPerImage++;
-  if (totalClicks < 5) {
+  if (totalClicks < 3) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
+    localStorageVotes(); //to account for previous votes
     resultVotes();
     document.getElementById('draw-chart').hidden = false;
     img1.removeEventListener('click', eachClick1);
     updateChartArrays();
-    for (var i = 0; i < imgs.length; i++) {
-      votesHistory.push(allImageObject[i].clicksPerImage); //now to stringify it.
-    }
+
+    // stringifiedHistory = JSON.stringify(allImageObject); //Step 1: Stringify "allImageObject"
+    // localStorage.setItem('keyAllImageObject', stringifiedHistory); //Step 2: Save data into localStorage
+    // retrievedHistory = localStorage.keyAllImageObject; //Step 3: get data back through localStorage
+    // parsedHistory = JSON.parse(retrievedHistory);
   }
 }
 
@@ -108,17 +142,15 @@ function eachClick2 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran2].clicksPerImage++;
-  if (totalClicks < 5) {
+  if (totalClicks < 3) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
+    localStorageVotes(); //to account for previous votes
     resultVotes();
     document.getElementById('draw-chart').hidden = false;
     img2.removeEventListener('click', eachClick2);
     updateChartArrays();
-    for (var i = 0; i < imgs.length; i++) {
-      votesHistory.push(allImageObject[i].clicksPerImage); //test this
-    }
   }
 }
 
@@ -127,17 +159,15 @@ function eachClick3 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran3].clicksPerImage++;
-  if (totalClicks < 5) {
+  if (totalClicks < 3) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
+    localStorageVotes(); //to account for previous votes
     resultVotes();
     document.getElementById('draw-chart').hidden = false;
     img3.removeEventListener('click', eachClick3);
     updateChartArrays();
-    for (var i = 0; i < imgs.length; i++) {
-      votesHistory.push(allImageObject[i].clicksPerImage); //test this
-    }
   }
 }
 
@@ -154,6 +184,9 @@ function updateChartArrays (){
     votes[i] = allImageObject[i].clicksPerImage;
   }
 }
+
+// here to make 
+
 
 var data = {
   labels: product,
