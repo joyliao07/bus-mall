@@ -13,9 +13,6 @@ var showVotes = document.getElementById('votes');
 
 var ran1, ran2, ran3;
 
-var showChart;
-var chartDrawn = false;
-
 var previousImages = [];
 
 //+++++++++++++++++++++++++CONSTRUCTOR & OTHER FUNCTIONS+++++++++++++++++++++++
@@ -50,7 +47,7 @@ random(1,20);
 
 function createImg() {
   ran1 = random(1,20)-1;
-  while (previousImages.indexOf(ran1) !== -1){  //use the indexof method
+  while (previousImages.indexOf(ran1) !== -1){ //use the indexof method
     ran1 = random(1,20) -1;
   }
   ran2 = random(1,20)-1;
@@ -68,7 +65,6 @@ function createImg() {
   allImageObject[ran2].displayCount ++;
   allImageObject[ran3].displayCount ++;
   previousImages = [ran1, ran2, ran3];
-  console.log ('previousImages: ', previousImages);
 }
 createImg();
 
@@ -81,15 +77,42 @@ function resultVotes() {
 }
 //////////////// BELOW ARE EVENT HANDLERS /////////////////////
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++
+//WHEN THE PAGE RELOAD
+//++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+function localStorageVotes () {
+
+  var newClicks = [];                       //Put new votes into an array
+  for (var j = 0; j < allImageObject.length; j++){
+    newClicks.push(allImageObject[j].clicksPerImage);
+  }
+
+  var totalLocalStorage = [];
+  if (localStorage.votesLocalStorage) {
+    for (var k = 0; k <newClicks.length; k++) {
+      totalLocalStorage[k] = newClicks[k] + JSON.parse(localStorage.votesLocalStorage)[k];
+    }
+  } else {
+
+    totalLocalStorage = newClicks;
+
+  }
+  localStorage.votesLocalStorage = JSON.stringify(totalLocalStorage);
+}
+
+
 
 function eachClick1 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran1].clicksPerImage++;
-  if (totalClicks < 25) {
+  if (totalClicks < 3) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
+    localStorageVotes(); //to account for previous votes
     resultVotes();
     document.getElementById('draw-chart').hidden = false;
     img1.removeEventListener('click', eachClick1);
@@ -102,10 +125,11 @@ function eachClick2 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran2].clicksPerImage++;
-  if (totalClicks < 25) {
+  if (totalClicks < 3) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
+    localStorageVotes(); //to account for previous votes
     resultVotes();
     document.getElementById('draw-chart').hidden = false;
     img2.removeEventListener('click', eachClick2);
@@ -118,18 +142,17 @@ function eachClick3 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran3].clicksPerImage++;
-  if (totalClicks < 25) {
+  if (totalClicks < 3) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
+    localStorageVotes(); //to account for previous votes
     resultVotes();
     document.getElementById('draw-chart').hidden = false;
     img3.removeEventListener('click', eachClick3);
     updateChartArrays();
   }
 }
-
-console.log(totalClicks);
 
 //++++++++++++++++++++++++++++++++++++++++++++++++
 //chart setup here
@@ -141,9 +164,10 @@ var votes = [];
 function updateChartArrays (){
   for (var i=0; i < allImageObject.length; i++) {
     product[i] = allImageObject[i].name2;
-    votes[i] = allImageObject[i].clicksPerImage;
+    votes[i] = JSON.parse(localStorage.votesLocalStorage)[i];
   }
 }
+
 
 var data = {
   labels: product,
@@ -182,7 +206,7 @@ var data = {
 
 function drawChart (){
   var ctx = document.getElementById('vote-chart').getContext('2d'); // "msGetInpurContext" or "getContext"?
-  showChart = new Chart (ctx, {
+  new Chart (ctx, {
     type: 'polarArea',
     data: data,
     options: {
@@ -202,7 +226,6 @@ function drawChart (){
       }]
     }
   });
-  chartDrawn = true;
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -223,7 +246,6 @@ document.getElementById('draw-chart').addEventListener('click', function() {
 document.getElementById('draw-chart').addEventListener('click', function() {
   document.getElementById('votes').hidden = true;
 });
-
 
 
 img1.addEventListener('click', eachClick1);
