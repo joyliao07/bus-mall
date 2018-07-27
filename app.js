@@ -204,6 +204,7 @@ var data = {
   }]
 };
 
+
 function drawChart (){
   var ctx = document.getElementById('vote-chart').getContext('2d'); // "msGetInpurContext" or "getContext"?
   new Chart (ctx, {
@@ -228,23 +229,24 @@ function drawChart (){
   });
 }
 
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //HIDE BUTTON HERE
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-document.getElementById('draw-chart').hidden = true;
+document.getElementById('draw-chart').hidden = true; //to hide the "SEE CHART" button before 25 clicks
 
 
 
 document.getElementById('draw-chart').addEventListener('click', function() {
   drawChart();
-  document.getElementById('draw-chart').hidden = true;
+  document.getElementById('draw-chart').hidden = true; //to hide the "SEE CHART" button before the chart is shown
 });
 
 
 document.getElementById('draw-chart').addEventListener('click', function() {
-  document.getElementById('votes').hidden = true;
+  document.getElementById('votes').hidden = true;  //to hide the vote list when the chart is shown
 });
 
 
