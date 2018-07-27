@@ -108,7 +108,7 @@ function eachClick1 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran1].clicksPerImage++;
-  if (totalClicks < 3) {
+  if (totalClicks < 25) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
@@ -125,7 +125,7 @@ function eachClick2 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran2].clicksPerImage++;
-  if (totalClicks < 3) {
+  if (totalClicks < 25) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
@@ -142,7 +142,7 @@ function eachClick3 (event) {
   var nameClicked = event.target.src;
   totalClicks++;
   allImageObject[ran3].clicksPerImage++;
-  if (totalClicks < 3) {
+  if (totalClicks < 25) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
