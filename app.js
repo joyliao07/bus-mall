@@ -1,5 +1,5 @@
 'use strict';
-
+// test 7/27;
 
 var imgs = ['img/bag.jpg', 'img/banana.jpg', 'img/bathroom.jpg', 'img/boots.jpg', 'img/breakfast.jpg', 'img/bubblegum.jpg', 'img/chair.jpg', 'img/cthulhu.jpg', 'img/dog-duck.jpg', 'img/dragon.jpg', 'img/pen.jpg', 'img/pet-sweep.jpg', 'img/scissors.jpg', 'img/shark.jpg', 'img/sweep.png', 'img/tauntaun.jpg', 'img/unicorn.jpg', 'img/usb.gif', 'img/water-can.jpg', 'img/wine-glass.jpg'];
 
@@ -253,9 +253,3 @@ document.getElementById('draw-chart').addEventListener('click', function() {
 img1.addEventListener('click', eachClick1);
 img2.addEventListener('click', eachClick2);
 img3.addEventListener('click', eachClick3);
-
-
-
-
-
-
