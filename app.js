@@ -3,16 +3,19 @@
 
 var imgs = ['img/bag.jpg', 'img/banana.jpg', 'img/bathroom.jpg', 'img/boots.jpg', 'img/breakfast.jpg', 'img/bubblegum.jpg', 'img/chair.jpg', 'img/cthulhu.jpg', 'img/dog-duck.jpg', 'img/dragon.jpg', 'img/pen.jpg', 'img/pet-sweep.jpg', 'img/scissors.jpg', 'img/shark.jpg', 'img/sweep.png', 'img/tauntaun.jpg', 'img/unicorn.jpg', 'img/usb.gif', 'img/water-can.jpg', 'img/wine-glass.jpg'];
 
-
 var totalClicks = 0;
-
 
 var img1 = document.getElementById('img1');
 var img2 = document.getElementById('img2');
 var img3 = document.getElementById('img3');
 
+var showVotes = document.getElementById('votes');
 
-////////////////CONSTRUCTOR TO TRACK COUNT OF CLICKS/////////////////////
+var ran1, ran2, ran3;
+
+var previousImages = [];
+
+//+++++++++++++++++++++++++CONSTRUCTOR & OTHER FUNCTIONS+++++++++++++++++++++++
 
 var imgObjs = []; //this is the images that have been shown on the webpage; duplicated list?
 var allImageObject = []; //this is all the images that we have and all their info from the constructor
@@ -28,8 +31,6 @@ function ImageTracker(allImages) {
   // nukeresultVotes();
 }
 
-
-
 for( var i=0; i < imgs.length; i++) {
   imgObjs.push(new ImageTracker(imgs[i]));
 }
@@ -44,124 +45,211 @@ function random (min, max) {
 random(1,20);
 
 
-var ran1, ran2, ran3;
-
 function createImg() {
   ran1 = random(1,20)-1;
+  while (previousImages.indexOf(ran1) !== -1){ //use the indexof method
+    ran1 = random(1,20) -1;
+  }
   ran2 = random(1,20)-1;
+  while (ran2 === ran1 || previousImages.indexOf(ran2) !== -1){
+    ran2 = random(1,20) -1;
+  }
   ran3 = random(1,20)-1;
+  while (ran3 === ran2 || ran3 === ran1 || previousImages.indexOf(ran3) !== -1){
+    ran3 = random(1,20) -1;
+  }
   img1.src = imgs[ran1];
   img2.src = imgs[ran2];
   img3.src = imgs[ran3];
   allImageObject[ran1].displayCount ++;
   allImageObject[ran2].displayCount ++;
   allImageObject[ran3].displayCount ++;
-  // console.log('allImageObject[ran1].name2: ', allImageObject[ran1].name2);
-  // console.log('allImageObject[ran1].displayCount: ', allImageObject[ran1].displayCount);
-  // console.log('allImageObject[ran2].name2: ', allImageObject[ran2].name2);
-  // console.log('allImageObject[ran2].displayCount: ', allImageObject[ran2].displayCount);
-  // console.log('allImageObject[ran3].name2: ', allImageObject[ran3].name2);
-  // console.log('allImageObject[ran3].displayCount: ', allImageObject[ran3].displayCount);
+  previousImages = [ran1, ran2, ran3];
 }
 createImg();
 
-
-//////////////// TO TRACK CLICK COUNTS/////////////////////
-
-function eachClick1 (event) {
-
-  totalClicks++;
-
-  var nameClicked = event.target.src;
-  console.log('nameClicked: ', nameClicked);
-  allImageObject[ran1].clicksPerImage++;
-  console.log('allImageObject[ran1].name2: ', allImageObject[ran1].name2);
-  console.log('allImageObject[ran1].clicksPerImage: ', allImageObject[ran1].clicksPerImage);
-  if (totalClicks < 25) {
-
-
-
-
-    createImg();
-  } else {
-
-
-    alert('You have reached 25 clicks. Thank you for your participation.');
+function resultVotes() {
+  for (var j = 0; j < allImageObject.length; j++) {
+    var ulEl = document.createElement('ul');
+    ulEl.textContent = 'Product ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
+    showVotes.appendChild(ulEl);
   }
 }
+//////////////// BELOW ARE EVENT HANDLERS /////////////////////
 
-var showVotes = document.getElementById('votes');
+//++++++++++++++++++++++++++++++++++++++++++++++++++++
+//WHEN THE PAGE RELOAD
+//++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-// function nukeresultVotes() {
-//   for (var j = 0; j < allImageObject.length; j++) {
-//     var ulEl = document.createElement('ul');
-//     ulEl.textContent = 'Image ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
-//     showVotes.appendChild(ulEl);
-//   }
-//   // if (showVotes) {
-//   //   showVotes.remove();
-//   }
-// }
+function localStorageVotes () {
 
-// function resultVotes() {
-//   for (var j = 0; j < allImageObject.length; j++) {
-//     var ulEl = document.createElement('ul');
-//     ulEl.textContent = 'Image ' + allImageObject[j].name2 + ': ' + allImageObject[j].clicksPerImage + ' votes';
-//     showVotes.appendChild(ulEl);
-//   }
-// }
+  var newClicks = [];                       //Put new votes into an array
+  for (var j = 0; j < allImageObject.length; j++){
+    newClicks.push(allImageObject[j].clicksPerImage);
+  }
+
+  var totalLocalStorage = [];
+  if (localStorage.votesLocalStorage) {
+    for (var k = 0; k <newClicks.length; k++) {
+      totalLocalStorage[k] = newClicks[k] + JSON.parse(localStorage.votesLocalStorage)[k];
+    }
+  } else {
+
+    totalLocalStorage = newClicks;
+
+  }
+  localStorage.votesLocalStorage = JSON.stringify(totalLocalStorage);
+}
+
+
+
+function eachClick1 (event) {
+  var nameClicked = event.target.src;
+  totalClicks++;
+  allImageObject[ran1].clicksPerImage++;
+  if (totalClicks < 25) {
+    createImg();
+  } else {
+    alert('You have reached 25 clicks. Thank you for your participation.');
+    localStorageVotes(); //to account for previous votes
+    resultVotes();
+    document.getElementById('draw-chart').hidden = false;
+    img1.removeEventListener('click', eachClick1);
+    updateChartArrays();
+  }
+}
 
 
 function eachClick2 (event) {
-
-  totalClicks++;
-
   var nameClicked = event.target.src;
-  console.log('nameClicked: ', nameClicked);
+  totalClicks++;
   allImageObject[ran2].clicksPerImage++;
-  console.log('allImageObject[ran2].name2: ', allImageObject[ran2].name2);
-  console.log('allImageObject[ran2].clicksPerImage: ', allImageObject[ran2].clicksPerImage);
   if (totalClicks < 25) {
-
     createImg();
   } else {
-
     alert('You have reached 25 clicks. Thank you for your participation.');
+    localStorageVotes(); //to account for previous votes
+    resultVotes();
+    document.getElementById('draw-chart').hidden = false;
+    img2.removeEventListener('click', eachClick2);
+    updateChartArrays();
   }
 }
+
 
 function eachClick3 (event) {
-
-  totalClicks++;
-
   var nameClicked = event.target.src;
-  console.log('nameClicked: ', nameClicked);
+  totalClicks++;
   allImageObject[ran3].clicksPerImage++;
-  console.log('allImageObject[ran3].name2: ', allImageObject[ran3].name2);
-  console.log('allImageObject[ran3].clicksPerImage: ', allImageObject[ran3].clicksPerImage);
   if (totalClicks < 25) {
     createImg();
   } else {
     alert('You have reached 25 clicks. Thank you for your participation.');
+    localStorageVotes(); //to account for previous votes
+    resultVotes();
+    document.getElementById('draw-chart').hidden = false;
+    img3.removeEventListener('click', eachClick3);
+    updateChartArrays();
+  }
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++
+//chart setup here
+//++++++++++++++++++++++++++++++++++++++++++++++++
+
+var product = [];
+var votes = [];
+
+function updateChartArrays (){
+  for (var i=0; i < allImageObject.length; i++) {
+    product[i] = allImageObject[i].name2;
+    votes[i] = JSON.parse(localStorage.votesLocalStorage)[i];
   }
 }
 
 
+var data = {
+  labels: product,
+  datasets: [{
+    data: votes,
+    backgroundColor: [
+      'red',
+      'lightblue',
+      'navy',
+      'red',
+      'lightblue',
+      'navy',
+      'red',
+      'lightblue',
+      'navy',
+      'red',
+      'lightblue',
+      'navy'
+    ],
+    hoverBackgroundColor: [
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple',
+      'purple'
+    ],
+  }]
+};
 
 
-/////////////below are to show the counts///////////////////////////////////
+function drawChart (){
+  var ctx = document.getElementById('vote-chart').getContext('2d'); // "msGetInpurContext" or "getContext"?
+  new Chart (ctx, {
+    type: 'polarArea',
+    data: data,
+    options: {
+      responsive: false, //set it to false so you can change the size of the chart (otherwise will be entire screen)
+      animation: {
+        duration: 1000,
+        easing: 'easeOutBounce'
+      }
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          max: 10,
+          min: 0,
+          stepSize: 1.0
+        }
+      }]
+    }
+  });
+}
 
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//HIDE BUTTON HERE
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+document.getElementById('draw-chart').hidden = true; //to hide the "SEE CHART" button before 25 clicks
+
+
+
+document.getElementById('draw-chart').addEventListener('click', function() {
+  drawChart();
+  document.getElementById('draw-chart').hidden = true; //to hide the "SEE CHART" button before the chart is shown
+});
+
+
+document.getElementById('draw-chart').addEventListener('click', function() {
+  document.getElementById('votes').hidden = true;  //to hide the vote list when the chart is shown
+});
 
 
 img1.addEventListener('click', eachClick1);
 img2.addEventListener('click', eachClick2);
 img3.addEventListener('click', eachClick3);
-
-
-
-
-
-
-

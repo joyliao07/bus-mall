@@ -16,7 +16,11 @@ header {
 header p {
     font-size: 50px;
     text-align: center;
-    margin-bottom: 60px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    margin-bottom: 50px;
+    font-family: Exo;
+    border: 5px double black;
 }
 
 nav li {
@@ -36,12 +40,39 @@ ol.contact {
     text-align: center;
 }
 
-.pix3 {
-    width: 250px;
-    margin: 30px;
-    align-items: center;
-    display: inline;
+main div p {
+    color: #0a1d3d;
+    size: 12px;
+    font-family: Noto Sans;
+    line-height: 50px;
 }
+
+.pix3 {
+    width: 180px;
+    margin: 30px;
+    margin-bottom: 80px;   
+    display: inline;
+    border: 2px double black;   
+}
+
+.button-chart {
+    position: absolute;
+    height: 60px;
+    width: 250px;
+    background-color: #274b87;
+    color: white;
+    /* display: block;
+    align-content: center;   */
+    top: 1530px;
+    right: 500px;
+}
+
+
+
+
+
+
+
 
 
 
